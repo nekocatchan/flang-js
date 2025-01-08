@@ -1,5 +1,7 @@
 export function interpret(ast, env) {
   switch (ast.type) {
+    case "Num":
+      return interpretNum(ast, env);
     case "Ident":
       return interpretIdent(ast, env);
     case "CallExpr":
@@ -9,12 +11,17 @@ export function interpret(ast, env) {
   }
 }
 
+function interpretNum(ast, _env) {
+  return ast.value;
+}
+
 function interpretIdent(ast, env) {
   return env[ast.name];
 }
 
 function interpretCallExpr(ast, env) {
   const func = interpret(ast.callee, env);
-  const value = func();
+  const args = ast.args.map((arg) => interpret(arg, env));
+  const value = func(...args);
   return value;
 }

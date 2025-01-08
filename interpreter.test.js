@@ -16,3 +16,19 @@ Deno.test("定数関数の呼び出し", () => {
 
   assertEquals(interpret(ast, env), 42);
 });
+
+Deno.test("恒等関数の呼び出し", () => {
+  const ast = {
+    type: "CallExpr",
+    callee: {
+      type: "Ident",
+      name: "id",
+    },
+    args: [{ type: "Num", value: 42 }],
+  };
+  const env = {
+    "id": (x) => x,
+  };
+
+  assertEquals(interpret(ast, env), 42);
+});
