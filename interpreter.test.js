@@ -32,3 +32,22 @@ Deno.test("恒等関数の呼び出し", () => {
 
   assertEquals(interpret(ast, env), 42);
 });
+
+Deno.test("多変数関数の呼び出し", () => {
+  const ast = {
+    type: "CallExpr",
+    callee: {
+      type: "Ident",
+      name: "add",
+    },
+    args: [
+      { type: "Num", value: 42 },
+      { type: "Num", value: 58 },
+    ],
+  };
+  const env = {
+    "add": (x, y) => x + y,
+  };
+
+  assertEquals(interpret(ast, env), 100);
+});
